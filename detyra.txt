@@ -1,0 +1,42 @@
+Implementimi i One time pad duke gjeneruar nje key stream nga nje int32 ose string seed. Implementimi i SymmetricAlgorithm qe ofron enkriptues dhe dekriptues per kete algoritem.
+
+Në çdo vend që thuhet implementimi nënkupton implementimin e së paku enkriptimit dhe dekriptimit si dhe mundësitë e gjenerimit të çelësit ose i njëjti të i jepet manualisht.
+Secila detyrë duhet të implementohet si console me inicim përmes parametrave dhe si desktop app.
+Detyrat që e kanë të shënuar që të implementojne klasët abstrakte duhet që patjetër ta implementojnë të njëjtën ndërkaq për të tjerat është e preferueshme që aty ku ka mundësi të bëhet implementim i ngjashëm.
+Vlerësimi do të bëhet duke marrë parasysh plotësimin e kërkesave, kodi (implementimi i mainit, argumentet, trajtimi i gabimeve, formatimi i kodit, modulariteti i kodit, granulariteti), repositoryt (mirëmbajtja e repositoryt, mesazhet dhe përmbajtja e commitave, evoluimi i projektit, readme fajlli) dhe përgjigjet gjatë mbrojtjes.
+
+Mbrojtja do të bëhet me datë: 07 dhe 08 maJ
+
+
+
+
+// EXAMPLE 
+
+Suppose Alice wishes to send the message "HELLO" to Bob. Assume two pads of paper containing identical random sequences of letters were somehow previously produced and securely issued to both. Alice chooses the appropriate unused page from the pad. The way to do this is normally arranged for in advance, as for instance "use the 12th sheet on 1 May", or "use the next available sheet for the next message".
+
+The material on the selected sheet is the key for this message. Each letter from the pad will be combined in a predetermined way with one letter of the message. (It is common, but not required, to assign each letter a numerical value, e.g., "A" is 0, "B" is 1, and so on.)
+
+In this example, the technique is to combine the key and the message using modular addition. The numerical values of corresponding message and key letters are added together, modulo 26. So, if key material begins with "XMCKL" and the message is "HELLO", then the coding would be done as follows:
+
+      H       E       L       L       O  message
+   7 (H)   4 (E)  11 (L)  11 (L)  14 (O) message
++ 23 (X)  12 (M)   2 (C)  10 (K)  11 (L) key
+= 30      16      13      21      25     message + key
+=  4 (E)  16 (Q)  13 (N)  21 (V)  25 (Z) (message + key) mod 26
+      E       Q       N       V       Z  → ciphertext
+If a number is larger than 25, then the remainder after subtraction of 26 is taken in modular arithmetic fashion. This simply means that if the computations "go past" Z, the sequence starts again at A.
+
+The ciphertext to be sent to Bob is thus "EQNVZ". Bob uses the matching key page and the same process, but in reverse, to obtain the plaintext. Here the key is subtracted from the ciphertext, again using modular arithmetic:
+
+       E       Q       N       V       Z  ciphertext
+    4 (E)  16 (Q)  13 (N)  21 (V)  25 (Z) ciphertext
+-  23 (X)  12 (M)   2 (C)  10 (K)  11 (L) key
+= -19       4      11      11      14     ciphertext – key
+=   7 (H)   4 (E)  11 (L)  11 (L)  14 (O) ciphertext – key (mod 26)
+       H       E       L       L       O  → message
+Similar to the above, if a number is negative, then 26 is added to make the number zero or higher.
+
+Thus Bob recovers Alice's plaintext, the message "HELLO". Both Alice and Bob destroy the key sheet immediately after use, thus preventing reuse and an attack against the cipher. The KGB often issued its agents one-time pads printed on tiny sheets of flash paper, paper chemically converted to nitrocellulose, which burns almost instantly and leaves no ash.[15]
+
+The classical one-time pad of espionage used actual pads of minuscule, easily concealed paper, a sharp pencil, and some mental arithmetic. The method can be implemented now as a software program, using data files as input (plaintext), output (ciphertext) and key material (the required random sequence). The XOR operation is often used to combine the plaintext and the key elements, and is especially attractive on computers since it is usually a native machine instruction and is therefore very fast. It is, however, difficult to ensure that the key material is actually random,
+is used only once, never becomes known to the opposition, and is completely destroyed after use. The auxiliary parts of a software one-time pad implementation present real challenges: secure handling/transmission of plaintext, truly random keys, and one-time-only use of the key.

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTimePad", "OneTimePad.csproj", "{3413A1F3-091A-4C7C-AF96-3A55D75CAA65}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3413A1F3-091A-4C7C-AF96-3A55D75CAA65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3413A1F3-091A-4C7C-AF96-3A55D75CAA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3413A1F3-091A-4C7C-AF96-3A55D75CAA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3413A1F3-091A-4C7C-AF96-3A55D75CAA65}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CD43838A-7B00-4D06-A365-8AF23A58C9FD}
+	EndGlobalSection
+EndGlobal
