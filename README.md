@@ -22,7 +22,3 @@ Despite its problems, the one-time-pad retains some practical interest. In some 
 - The one-time-pad can be used in superencryption.
 - The algorithm most commonly associated with quantum key distribution is the one-time pad.
 - The one-time pad is mimicked by stream ciphers.
-
-
-
-## Build

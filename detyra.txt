@@ -5,9 +5,7 @@ Secila detyrë duhet të implementohet si console me inicim përmes parametrave 
 Detyrat që e kanë të shënuar që të implementojne klasët abstrakte duhet që patjetër ta implementojnë të njëjtën ndërkaq për të tjerat është e preferueshme që aty ku ka mundësi të bëhet implementim i ngjashëm.
 Vlerësimi do të bëhet duke marrë parasysh plotësimin e kërkesave, kodi (implementimi i mainit, argumentet, trajtimi i gabimeve, formatimi i kodit, modulariteti i kodit, granulariteti), repositoryt (mirëmbajtja e repositoryt, mesazhet dhe përmbajtja e commitave, evoluimi i projektit, readme fajlli) dhe përgjigjet gjatë mbrojtjes.
 
-Mbrojtja do të bëhet me datë: 07 dhe 08 maJ
-
-
+Mbrojtja do të bëhet me datë: 17 Maj
 
 
 // EXAMPLE 
