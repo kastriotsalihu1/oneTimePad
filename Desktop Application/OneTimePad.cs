@@ -1,11 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Security.Cryptography;
 
-namespace Sig
+
+namespace OneTimePad
 {
-    class OneTimePad
+    class OneTimePadAlgorithm : SymmetricAlgorithm
     {
+        override public int BlockSize { get; set; }
+        override public byte[] Key { get; set; }
+        override public int KeySize { get; set; }
+
+        private string StringSeed;
+        private int InputLength;
+
+        public void setInputLength(int i)
+        {
+            InputLength = i;
+        }
+        public void setStringSeed(string seed)
+        {
+            this.StringSeed = seed;
+        }
+        public void setStringSeed(int seed)
+        {
+            this.StringSeed = seed.ToString();
+        }
+
+        public string getStringSeed()
+        {
+            return this.StringSeed;
+        }
+
+        public static OneTimePadAlgorithm Create()
+        {
+            return new OneTimePadAlgorithm();
+        }
+
+
+        override public ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV)
+        {
+            CryptoTransform t = new CryptoTransform();
+            t.Otp = rgbKey;
+            return t;
+        }
+
+        override public ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV)
+        {
+            CryptoTransform t = new CryptoTransform();
+            t.Otp = rgbKey;
+            return t;
+        }
+
         private static uint Adler32(string str)
         {
             const int mod = 65521;
@@ -17,38 +62,28 @@ namespace Sig
             }
             return (b << 16) | a;
         }
-        public static byte[] GenerateOTP(int seed, int size)
+
+        public override void GenerateIV()
         {
-            var random = new Random(Seed: seed);
-            var OTP = new byte[size];
-            random.NextBytes(OTP);
-            return OTP;
+            throw new NotImplementedException();
         }
-        public static byte[] GenerateOTP(string strSeed, int size)
+        override public void GenerateKey()
         {
-            int seed = (int)Adler32(strSeed);
-            var random = new Random(Seed: seed);
-            var OTP = new byte[size];
-            random.NextBytes(OTP);
-            return OTP;
-        }
-        public static byte[] Encrypt(byte[] plainTxt, byte[] otp)
-        {
-            var cipherTxt = new byte[plainTxt.Length];
-            for (int i = 0; i < plainTxt.Length; i++)
+            int seed;
+            try
             {
-                cipherTxt[i] = (byte)(plainTxt[i] ^ otp[i]);
+                seed = (int)UInt64.Parse(this.StringSeed);
             }
-            return cipherTxt;
-        }
-        public static byte[] Decrypt(byte[] encryptedTxt, byte[] otp)
-        {
-            var decryptedTxt = new byte[encryptedTxt.Length];
-            for (int i = 0; i < encryptedTxt.Length; i++)
+            catch (FormatException)
             {
-                decryptedTxt[i] = (byte)(encryptedTxt[i] ^ otp[i]);
+                seed = (int)Adler32(this.StringSeed);
             }
-            return decryptedTxt;
+
+            var random = new Random(Seed: seed);
+            var OTP = new byte[this.InputLength];
+            random.NextBytes(OTP);
+            this.Key = OTP;
+            this.KeySize = OTP.Length;
         }
     }
 }

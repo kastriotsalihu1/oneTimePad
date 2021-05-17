@@ -7,12 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OneTimePad;
 
 
 namespace Sig
 {
     public partial class encryptForm : Form
     {
+
+        OneTimePadAlgorithm otp;
         public encryptForm()
         {
             InitializeComponent();
@@ -43,39 +46,38 @@ namespace Sig
             txtSeed.Text = rand.Next() + "";
         }
 
-        private byte[] OTPFromSeed(Encoding encode)
-        {
-            if (txtSeed.Text.Length == 0 && txtOTP.Text.Length > 0)
-            {
-                return encode.GetBytes(txtOTP.Text);
-            }
-            bool isNumeric = int.TryParse(txtSeed.Text, out _);
-            byte[] oneTimePad;
-            if (isNumeric)
-                oneTimePad = OneTimePad.GenerateOTP(int.Parse(txtSeed.Text), txtInput.Text.Length);
-            else
-                oneTimePad = OneTimePad.GenerateOTP(txtSeed.Text, txtInput.Text.Length);
-
-            return oneTimePad;
-        }
-
 
         private void InputToOutput(Encoding encode)
         {
+            otp = OneTimePadAlgorithm.Create();
+            otp.setInputLength(txtInput.Text.Length);
             if (rbEncrypt.Checked)
             {
-                byte[] inputText = encode.GetBytes(txtInput.Text);
-                byte[] oneTimePad = OTPFromSeed(encode);
 
-                txtOTP.Text = encode.GetString(oneTimePad);
-                txtOutput.Text = encode.GetString(OneTimePad.Encrypt(oneTimePad, inputText));
+                bool isNumeric = int.TryParse(txtSeed.Text, out _);
+                if (isNumeric)
+                    otp.setStringSeed(int.Parse(txtSeed.Text));
+                else
+                    otp.setStringSeed(txtSeed.Text);
+
+                otp.GenerateKey();
+                CryptoTransform ict = (CryptoTransform)otp.CreateEncryptor(otp.Key,null);
+
+
+                byte[] inputText = encode.GetBytes(txtInput.Text);
+            
+                txtOTP.Text = encode.GetString(otp.Key);
+                txtOutput.Text = encode.GetString(ict.TransformFinalBlock(inputText, 0, txtInput.Text.Length));
             }
             else
             {
-                byte[] inputText = encode.GetBytes(txtInput.Text);
-                byte[] oneTimePad = encode.GetBytes(txtOTP.Text);
+                otp.Key = encode.GetBytes(txtOTP.Text);
+                CryptoTransform ict = (CryptoTransform)otp.CreateDecryptor(otp.Key, null);
 
-                txtOutput.Text = encode.GetString(OneTimePad.Decrypt(inputText, oneTimePad));
+                byte[] inputText = encode.GetBytes(txtInput.Text);
+
+
+                txtOutput.Text = encode.GetString(ict.TransformFinalBlock(inputText, 0, txtInput.Text.Length));
             }
         }
 

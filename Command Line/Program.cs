@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Command
@@ -36,6 +37,7 @@ namespace Command
             Console.WriteLine("Decrypted: " + type.GetString(Decrypt(encryption, oneTimePad)));
 
             Console.ReadLine();
+
         }
 
         private static uint Adler32(string str)
